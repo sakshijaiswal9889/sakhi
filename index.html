@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fetch Users</title>
+<style>
+  
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+#userList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.user-card {
+  background-color: #f4f4f4;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.user-card h2 {
+  margin-bottom: 5px;
+}
+
+.user-card p {
+  margin-bottom: 15px;
+}
+</style>
+</head>
+<body>
+
+<h1>Fetch Users</h1>
+<button id="fetchUsersBtn">Fetch Users</button>
+<div id="userList"></div>
+
+<script>document.addEventListener('DOMContentLoaded', () => {
+  const fetchUsersBtn = document.getElementById('fetchUsersBtn');
+  const userList = document.getElementById('userList');
+
+  fetchUsersBtn.addEventListener('click', async () => {
+    try {
+      const response = await fetch('https://reqres.in/api/users');
+      const data = await response.json();
+      
+      userList.innerHTML = '';
+
+      data.data.forEach(user => {
+        const userCard = document.createElement('div');
+        userCard.classList.add('user-card');
+
+        const name = document.createElement('h2');
+        name.textContent = `${user.first_name} ${user.last_name}`;
+
+        const email = document.createElement('p');
+        email.textContent = user.email;
+
+        const avatar = document.createElement('img');
+        avatar.src = user.avatar;
+        avatar.alt = `${user.first_name}'s avatar`;
+
+        userCard.appendChild(name);
+        userCard.appendChild(email);
+        userCard.appendChild(avatar);
+
+        userList.appendChild(userCard);
+      });
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  });
+});</script>
+</body>
+</html>
+
